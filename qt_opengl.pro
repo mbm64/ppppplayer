@@ -1,0 +1,13 @@
+CONFIG -= app_bundle
+QT += widgets
+CONFIG += debug
+QT_CONFIG -= no-pkg-config
+CONFIG += link_pkgconfig debug
+PKGCONFIG += mpv
+DESTDIR = out
+OBJECTS_DIR = out/buildfiles
+MOC_DIR = out/buildfiles
+RCC_DIR = out/buildfiles
+UI_DIR = out/buildfiles
+HEADERS = *.h 
+SOURCES = *.cpp
