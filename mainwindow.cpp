@@ -9,6 +9,7 @@
 //#include "mpvcontroller.h"
 #include "context.h"
 #include "playbar.h"
+#include <QTextStream>
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
 	setMinimumSize(640,480);
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     //vl->addLayout(hb);
     //setLayout(vl);
 	setCentralWidget(m_mpv);
+
 	//addDockWidget(Qt::BottomDockWidgetArea,dock);
 	
 
@@ -43,6 +45,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	ContextMenu * ctxmen = new ContextMenu(controller,this);
 	connect(m_mpv, &QWidget::customContextMenuRequested,ctxmen,&ContextMenu::show_ctx_menu);
 	//connect(m_playBtn, &QPushButton::pressed,controller, &MpvController::pause);
+	
+	m_mpv -> setMouseTracking(true);
+	pb -> setMouseTracking(true);
+	setMouseTracking(true);
 }
 
 void MainWindow::openMedia()
@@ -76,4 +82,21 @@ void MainWindow::setSliderRange(int duration)
 
 void MainWindow::resizeEvent(QResizeEvent * event){ 
 	pb->resize_bar(event ->size().width(), event->size().height());	
+}
+void MainWindow::mouseMoveEvent(QMouseEvent * event){
+	QTextStream out(stdout);
+	int y = event->windowPos().y();
+	//out <<QString("(%1,%2) bound %3\n").arg(event->windowPos().x()).arg(y).arg(height()-140);
+	if(y > height() -140)
+		//out <<QString("move detected %1 %2\n").arg(event ->windowPos().x()).arg(event->windowPos().y());
+		pb->bar_appear();
+	else 
+		pb->bar_dissapear();
+		
+	
+	
+}
+void MainWindow::mousePressEvent(QMouseEvent * event){
+	pb -> bar_appear();
+
 }

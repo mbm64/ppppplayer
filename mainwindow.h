@@ -26,6 +26,8 @@ private:
     QPushButton *m_playBtn;
 protected:
 	void resizeEvent(QResizeEvent * event);
+	void mouseMoveEvent(QMouseEvent * event);
+	void mousePressEvent(QMouseEvent * event);
 };
 
 #endif // MainWindow_H

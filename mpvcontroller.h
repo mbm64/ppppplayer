@@ -7,6 +7,9 @@ class MpvController : public QWidget{
 	Q_OBJECT
 	public:
 		MpvController(MpvWidget *mpv_widget,QWidget *parent = nullptr);
+
+		QVariant getProperty(QString property);
+		void setProperty(QString property, QVariant value);
 	private:
 		QWidget *parent;
 		MpvWidget *mpv;
@@ -14,13 +17,22 @@ class MpvController : public QWidget{
 		QTime *clipend;
 		QSettings settings;
 		int volume;
+		bool seek_paused;
 	public slots:
 		void file_open();
+		void folder_open();
 		void pause();
+		void stop();
 		void get_start_time();
 		void get_end_time();
 		void clip_it();
 		void set_volume(int vol);
+		void seek(int pos);
+		void seek_pause();
+		void seek_unpause();
+		void seek_forward();
+		void seek_backward();
+		void seek_time(int secs);
 	private slots:
 		void handle_mpv_event(mpv_event *event);
 	signals:
