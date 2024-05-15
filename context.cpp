@@ -3,6 +3,7 @@
 #include <QTextStream>
 #include <QLocale>
 #include <util.h>
+#include <QFileInfo>
 //#include "mpvcontroller.h"
 ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(parent){
 	this -> controller = controller;
@@ -10,6 +11,7 @@ ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(p
 	QMenu * file = ctx_menu -> addMenu("File");
 	QAction * open_file = file -> addAction("Open File");
 	QAction * open_folder = file -> addAction("Open Folder");
+	history = file -> addMenu("Recently Watched");
 	QAction * settings = ctx_menu -> addAction("Settings");
 	
 	QMenu * clip = ctx_menu -> addMenu("Clip");
@@ -43,6 +45,7 @@ ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(p
 	}
 void ContextMenu::show_ctx_menu(const QPoint &pos){
 	init_tracks();
+	init_history();
 	ctx_menu -> exec(this -> mapToGlobal(pos));
 }
 
@@ -109,5 +112,16 @@ void ContextMenu::init_tracks(){
 		}	
 	}
 
+
+}
+
+void ContextMenu::init_history(){
+	QStringList vid_history = settings.value("history/videos",QStringList()).toStringList();
+	for(QString s : vid_history){
+		QFileInfo file(s);
+		if(!file.exists()) continue;
+
+		history ->addAction(file.fileName());	
+	}
 
 }

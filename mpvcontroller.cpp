@@ -81,6 +81,8 @@ void MpvController::file_load(){
 	setProperty("aid", "auto");
 	setProperty("sid", "auto");
 	setProperty("pause", false);
+
+	//setting audio and subs
 	QString prefered_sub_lang = settings.value("sub/preferred","").toString().simplified();
 	prefered_sub_lang.replace(" ","");
 	setProperty("slang", prefered_sub_lang);
@@ -89,6 +91,15 @@ void MpvController::file_load(){
 	QString prefered_aud_lang = settings.value("aud/preferred","").toString().simplified();
 	prefered_aud_lang.replace(" ","");
 	setProperty("alang", prefered_aud_lang);
+	
+	//adding to history 
+	QString filepath = getProperty("path").toString();
+	QStringList videoHistory = settings.value("history/videos", QStringList()).toStringList();
+	videoHistory.prepend(filepath);
+	while(videoHistory.size()>10) videoHistory.pop_back();
+	settings.setValue("history/videos", videoHistory);
+
+
 
 }
 //}}}

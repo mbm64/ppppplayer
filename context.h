@@ -18,8 +18,11 @@ class ContextMenu : public QWidget {
 		QAction *clip_end_time;
 		QMenu * subtitles;
 		QMenu * audio;
+		QMenu * history;
 		MpvController * controller;
+		QSettings settings;
 
 
 		void init_tracks();
+		void init_history();
 };
