@@ -6,11 +6,12 @@
 #include <QLineEdit>
 #include <QTextStream>
 Settings::Settings(QWidget *parent) : QWidget(parent){
-	QStringList setting_options = {"General","Clips", "Series","Subtitles"};
+	QStringList setting_options = {"General","Clips", "Series","Subtitles and Audio"};
 	this->resize(800,800);	
 	this->setWindowFlag(Qt::Dialog);
 	clipTab = new ClipSettings();
 	generalTab = new GeneralSettings();
+	subTab = new SubSettings();
 		
 	setting_options_box = new QListWidget();
 	
@@ -47,6 +48,9 @@ void Settings::setting_options_clicked(QListWidgetItem * option){
 	}
 	else if (option_name == "Clips") {
 		update_displayed_settings(clipTab);	
+	}
+	else if(option_name == "Subtitles and Audio"){
+		update_displayed_settings(subTab);
 	}
 }
 void Settings::update_displayed_settings(QWidget * tab){

@@ -27,6 +27,7 @@ class Settings : public QWidget {
 		QListWidget * setting_options_box;	
 		ClipSettings * clipTab;
 		GeneralSettings * generalTab;
+		SubSettings * subTab;
 
 
 

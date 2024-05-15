@@ -1,6 +1,8 @@
 #include "context.h"
 #include "settings_tab.h"
 #include <QTextStream>
+#include <QLocale>
+#include <util.h>
 //#include "mpvcontroller.h"
 ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(parent){
 	this -> controller = controller;
@@ -78,11 +80,20 @@ void ContextMenu::init_tracks(){
 		QString type = controller -> getProperty(prefix.arg("type")).toString();
 		QString title = controller -> getProperty(prefix.arg("title")).toString();
 		QString lang = controller -> getProperty(prefix.arg("lang")).toString();
-		//out << QString("id: %1 type: %2 title: %3 lang: %4\n").arg(id).arg(type).arg(title).arg(lang);
+		if(lang.size() > 2) lang = iso3to2(lang); 
+		QLocale local(lang);
+		//out << QString("%1 %2 %3 %4\n").arg(lang).arg(local.language()).arg(local.name()).arg(QLocale::languageToString(local.language()));
 		
 		QAction * action = new QAction();
-		action ->setText(title);
-		action -> setCheckable(true);
+		if(type != "video"){
+			if(!title.isEmpty())action ->setText(title);
+			else{
+				QLocale language(lang);
+				action ->setText(QLocale::languageToString(language.language()));
+			}
+			action -> setCheckable(true);
+
+		}
 		if(type == "audio"){
 			audio -> addAction(action);
 			if(id == aid) action ->setChecked(true);

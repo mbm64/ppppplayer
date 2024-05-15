@@ -24,3 +24,15 @@ class ClipSettings : public QWidget{
 		QSettings setting;
 };
 
+class SubSettings : public QWidget{
+	Q_OBJECT
+	public: 
+		SubSettings(QWidget *parent = nullptr);
+	private: 
+		QLineEdit * prefered_sub_lang;
+		QLineEdit * prefered_aud_lang;
+		QSettings setting;
+	private slots:
+		void update_prefered_subs(QString s);
+		void update_prefered_aud(QString s);
+};

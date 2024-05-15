@@ -18,6 +18,9 @@ class MpvController : public QWidget{
 		QSettings settings;
 		int volume;
 		bool seek_paused;
+
+
+		void file_load();
 	public slots:
 		void file_open();
 		void folder_open();

@@ -40,6 +40,7 @@ void MpvController::handle_mpv_event(mpv_event *event)
         break;
     }
 	case MPV_EVENT_START_FILE:{
+		file_load();
 
 		break;
 							  }								
@@ -48,7 +49,7 @@ void MpvController::handle_mpv_event(mpv_event *event)
     }
 }
 //}}}
-//file load func
+//file loading func
 //{{{
 void MpvController::file_open(){
 	QString lastopened = settings.value("history/lastdir","").toString();
@@ -73,6 +74,21 @@ void MpvController::folder_open(){
 
 	}
 	
+
+}
+
+void MpvController::file_load(){
+	setProperty("aid", "auto");
+	setProperty("sid", "auto");
+	setProperty("pause", false);
+	QString prefered_sub_lang = settings.value("sub/preferred","").toString().simplified();
+	prefered_sub_lang.replace(" ","");
+	setProperty("slang", prefered_sub_lang);
+
+
+	QString prefered_aud_lang = settings.value("aud/preferred","").toString().simplified();
+	prefered_aud_lang.replace(" ","");
+	setProperty("alang", prefered_aud_lang);
 
 }
 //}}}

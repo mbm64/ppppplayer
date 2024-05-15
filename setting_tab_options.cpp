@@ -8,7 +8,8 @@
 #include <QPushButton>
 #include <QStandardPaths>
 #include <QFileDialog>
-//General Settings 
+//General Settings
+//{{{
 GeneralSettings::GeneralSettings(QWidget *parent) : QWidget(parent){
 	QVBoxLayout * box = new QVBoxLayout();
 	QCheckBox *test1 = new QCheckBox("test setting 1");
@@ -18,10 +19,11 @@ GeneralSettings::GeneralSettings(QWidget *parent) : QWidget(parent){
 	box -> addWidget(new QCheckBox("test 2"),0,allign);
 	setLayout(box);
 }
-
+//}}}
 
 
 //Clip Settings
+//{{{
 ClipSettings::ClipSettings(QWidget*parent) : QWidget(parent){
 	
 	QGridLayout * grid = new QGridLayout();
@@ -70,3 +72,38 @@ void ClipSettings::update_clip_ext(QString s){
 	setting.setValue("clips/ext", s);
 
 }
+//}}}
+
+//Sub Setting 
+//{{{
+SubSettings::SubSettings(QWidget * parent) : QWidget(parent){
+	QGridLayout * grid = new QGridLayout();
+
+	prefered_sub_lang = new QLineEdit(this);
+	grid->addWidget(new QLabel("Preferred Subtitle Languages\n(Seperate With Commas)"),0,0);
+	grid -> addWidget(prefered_sub_lang,0,1);
+	prefered_sub_lang->setText(setting.value("sub/preferred","").toString());	
+	connect(prefered_sub_lang, &QLineEdit::textChanged, this, &SubSettings::update_prefered_subs);
+
+	
+	prefered_aud_lang = new QLineEdit(this);
+	grid -> addWidget(new QLabel("Preferred Audio Languages\n(Seperate With Commas)"),1,0);
+	grid -> addWidget(prefered_aud_lang,1,1);
+	prefered_aud_lang->setText(setting.value("aud/preferred","").toString());	
+	connect(prefered_aud_lang, &QLineEdit::textChanged,this,&SubSettings::update_prefered_aud);
+	setLayout(grid);
+}
+void SubSettings::update_prefered_subs(QString s){
+	setting.setValue("sub/preferred", s);
+
+}
+void SubSettings::update_prefered_aud(QString s){
+	setting.setValue("aud/preferred",s);
+
+}
+
+
+
+
+
+//}}}
