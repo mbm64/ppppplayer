@@ -5,6 +5,7 @@
 #include <QSlider>
 #include <QTimer>
 #include <QTextStream>
+#include <QScrollBar>
 class PlayBar : public QWidget{
 	Q_OBJECT
 	public:

@@ -4,6 +4,7 @@
 #include <QLocale>
 #include <util.h>
 #include <QFileInfo>
+#include "playlist.h"
 //#include "mpvcontroller.h"
 ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(parent){
 	this -> controller = controller;
@@ -13,7 +14,7 @@ ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(p
 	QAction * open_folder = file -> addAction("Open Folder");
 	history = file -> addMenu("Recently Watched");
 	QAction * settings = ctx_menu -> addAction("Settings");
-	
+	QAction * playlist = ctx_menu -> addAction("Playlist");
 	QMenu * clip = ctx_menu -> addMenu("Clip");
 	//clip functionality
 	QAction * set_start_clip = clip -> addAction("Set Start Clip Time");
@@ -41,6 +42,12 @@ ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(p
 	connect(quit, &QAction::triggered, qApp, QApplication::quit);
 	connect(open_file, &QAction::triggered, controller,&MpvController::file_open);
 	connect(open_folder, &QAction::triggered,controller, &MpvController::folder_open);
+
+	
+	PlaylistWindow * playlist_window = new PlaylistWindow(controller);
+	connect(playlist, &QAction::triggered, playlist_window, &QWidget::show);
+
+
 
 	}
 void ContextMenu::show_ctx_menu(const QPoint &pos){
