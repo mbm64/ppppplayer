@@ -8,6 +8,25 @@
 #include <QEasingCurve>
 #define BARUPTIME 3
 #define SEEKJUMP 3
+
+//{{{
+#include <QProxyStyle>
+
+class SliderStyle : public QProxyStyle
+{
+public:
+    using QProxyStyle::QProxyStyle;
+
+    int styleHint(QStyle::StyleHint hint, const QStyleOption* option = 0, const QWidget* widget = 0, QStyleHintReturn* returnData = 0) const
+    {
+        if (hint == QStyle::SH_Slider_AbsoluteSetButtons)
+            return (Qt::LeftButton | Qt::MidButton | Qt::RightButton);
+        return QProxyStyle::styleHint(hint, option, widget, returnData);
+    }
+};
+//}}}
+
+
 PlayBar::PlayBar(MpvController * mpv_controller, QWidget * parent) : QWidget(parent)
 {
 	this -> mpv = mpv;
@@ -20,6 +39,7 @@ PlayBar::PlayBar(MpvController * mpv_controller, QWidget * parent) : QWidget(par
 	video_slider ->setMinimum(0);
 	video_slider -> setMaximum(0);
 	video_slider -> setOrientation(Qt::Horizontal);
+	video_slider -> setStyle(new SliderStyle(this -> style()));
 	playbar -> addWidget(video_slider);
 	connect( video_slider , &QSlider::sliderMoved, mpv_controller, &MpvController::seek);
 	connect(video_slider, &QSlider::sliderPressed,mpv_controller, &MpvController::seek_pause);

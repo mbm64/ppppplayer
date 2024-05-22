@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <QFileInfo>
 #include <QDir>
+#include <QDebug>
 MpvController::MpvController(MpvWidget *mpv_widget,QWidget *parent): QWidget(parent){
 	mpv = mpv_widget;
 	this ->parent = parent;	
@@ -131,6 +132,7 @@ void MpvController::get_start_time(){
 void MpvController::get_end_time(){
 	const int timems =(int) (1000 * mpv -> getProperty("time-pos").toDouble());
 	clipend = new QTime(timems/3600000,timems / 60000,timems / 1000,timems %1000); 
+	qDebug() << "uhhh "<<timems <<" \n";
 	//std::cout << "uhhhhhhh"<<std::endl;
 	emit set_end_time(clipend ->toString("hh:mm:ss.zzz"));
 	//const dou time = mpv -> getProperty("time-pos");
