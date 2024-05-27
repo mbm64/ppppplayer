@@ -14,6 +14,7 @@ ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(p
 	QAction * open_file = file -> addAction("Open File");
 	QAction * open_folder = file -> addAction("Open Folder");
 	history = file -> addMenu("Recently Watched");
+	
 	QAction * settings = ctx_menu -> addAction("Settings");
 	QAction * playlist = ctx_menu -> addAction("Playlist");
 	QMenu * clip = ctx_menu -> addMenu("Clip");
@@ -26,6 +27,10 @@ ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(p
 	clip_end_time -> setEnabled(false);
 	QAction * clip_it = clip -> addAction("Clip It");
 	//clip_it->setEnabled(false);
+	//screenshot
+	QAction * screenshot = ctx_menu -> addAction("ScreenShot");
+	connect(screenshot, &QAction::triggered, controller, &MpvController::screenshot);
+
 	//subtitles 
 	subtitles = ctx_menu -> addMenu("Subtitles");
 	audio = ctx_menu -> addMenu("Audio");

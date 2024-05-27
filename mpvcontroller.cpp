@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QDebug>
 #include <cmath>
+#include <QStandardPaths>
 MpvController::MpvController(MpvWidget *mpv_widget,QWidget *parent): QWidget(parent){
 	mpv = mpv_widget;
 	this ->parent = parent;	
@@ -221,5 +222,7 @@ void MpvController::setProperty(QString property, QVariant value){
 //}}}
 
 void MpvController::screenshot(){
-
+	QString dir = settings.value("screenshot/path",QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)).toString();
+	QString datetime = QDate::currentDate().toString("-d-M-yyyy-")+QTime::currentTime().toString("hh:mm:ss");
+	mpv -> command(QStringList()<<"screenshot-to-file"<<QString("%1/pppp-%2.png").arg(dir).arg(datetime));
 }

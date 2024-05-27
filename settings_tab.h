@@ -28,6 +28,7 @@ class Settings : public QWidget {
 		ClipSettings * clipTab;
 		GeneralSettings * generalTab;
 		SubSettings * subTab;
+		ScreenshotSettings * screenshotTab;
 
 
 

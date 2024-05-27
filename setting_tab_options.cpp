@@ -45,7 +45,7 @@ ClipSettings::ClipSettings(QWidget*parent) : QWidget(parent){
 	QString clip_dir = setting.value("clips/dir", QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).toString();
 	clip_dir_box->setText(clip_dir);
 	clip_dir_box->setReadOnly(true);
-	
+
 	connect(browse_dir,&QPushButton::pressed, this, &ClipSettings::update_clip_dir);
 	//clip extension
 	QLineEdit * clip_extension = new QLineEdit();
@@ -110,7 +110,7 @@ void SubSettings::update_prefered_aud(QString s){
 
 
 //ScreenShot Settings
-ScreenshotSetteings::ScreenshotSetteings(QWidget * parent) : QWidget(parent){
+ScreenshotSettings::ScreenshotSettings(QWidget * parent) : QWidget(parent){
 	
 	QGridLayout * grid = new QGridLayout();
 	QLabel * dir_label = new QLabel("ScreenShot Directory");
@@ -118,10 +118,20 @@ ScreenshotSetteings::ScreenshotSetteings(QWidget * parent) : QWidget(parent){
 
 	path = new QLineEdit();
 	path->setReadOnly(true);
-	QString	current_path = settings.value("screenshot/path",QStandardPaths::PicturesLocation).toString();
+	QString	current_path = settings.value("screenshot/path",QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)).toString();
 	path -> setText(current_path);
 	grid -> addWidget(path,0,1);
 
 	QPushButton * browse = new QPushButton("Browse");
 	grid -> addWidget(browse,0,2);
+	connect(browse, &QPushButton::pressed, this, &ScreenshotSettings::browse_clicked);
+	setLayout(grid);
+}
+
+void ScreenshotSettings::browse_clicked(){
+	QString dir = QFileDialog::getExistingDirectory();
+	settings.setValue("screenshot/path", dir);
+	path -> setText(dir);
+
+
 }
