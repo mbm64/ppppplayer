@@ -9,6 +9,7 @@
 #define BARUPTIME 3
 #define SEEKJUMP 3
 
+//bar click settings
 //{{{
 #include <QProxyStyle>
 
@@ -29,19 +30,37 @@ public:
 
 PlayBar::PlayBar(MpvController * mpv_controller, QWidget * parent) : QWidget(parent)
 {
-	this -> mpv = mpv;
+	this -> mpv = mpv_controller;
+	noseek = false;
 	setMinimumSize(640, 120);
 	visible = true;
+	duration = new QLabel("00:00:00");
+	duration ->setStyleSheet("QLabel {color : white;}");
+	current_time = new QLabel("00:00:00");
+	current_time -> setStyleSheet("QLabel {color : white;}");
 	//size handling
 	setGeometry(0,parent->height()-120,parent ->width(),120);
+	//bar 
 	QVBoxLayout * playbar = new QVBoxLayout();
+
+	//times 
+	
+	QHBoxLayout * times = new QHBoxLayout();
+	times->addWidget(current_time,0,Qt::AlignLeft | Qt::AlignBottom);
+	times -> addWidget(duration, 0, Qt::AlignRight | Qt::AlignBottom);
+	playbar->addLayout(times);
+	//video slider
 	video_slider = new QSlider();
 	video_slider ->setMinimum(0);
 	video_slider -> setMaximum(0);
 	video_slider -> setOrientation(Qt::Horizontal);
 	video_slider -> setStyle(new SliderStyle(this -> style()));
 	playbar -> addWidget(video_slider);
-	connect( video_slider , &QSlider::sliderMoved, mpv_controller, &MpvController::seek);
+	connect( video_slider , &QSlider::valueChanged, mpv_controller, [this](const int &pos){
+			if(noseek) return;
+			mpv->seek(pos);
+
+			});
 	connect(video_slider, &QSlider::sliderPressed,mpv_controller, &MpvController::seek_pause);
 	connect(video_slider, &QSlider::sliderReleased,mpv_controller, &MpvController::seek_unpause);
 
@@ -53,7 +72,8 @@ PlayBar::PlayBar(MpvController * mpv_controller, QWidget * parent) : QWidget(par
 	volume_slider -> setMinimum(0);
 	volume_slider -> setMaximum(100);
 	volume_slider -> setSliderPosition(settings.value("play/volume",100).toInt());
-	connect(volume_slider, &QSlider::sliderMoved, mpv_controller, &MpvController::set_volume);
+	volume_slider -> setStyle(new SliderStyle(this -> style()));
+	connect(volume_slider, &QSlider::valueChanged, mpv_controller, &MpvController::set_volume);
 		
 	QPushButton * seek_backward_button = new QPushButton("<");
 	connect(seek_backward_button, &QPushButton::pressed, mpv_controller, &MpvController::seek_backward);
@@ -87,15 +107,23 @@ PlayBar::PlayBar(MpvController * mpv_controller, QWidget * parent) : QWidget(par
 
 
 }
+QString pos_to_time(double pos){
+	int secs = (int)pos;
+	QChar zero('0');
+	return QString("%1:%2:%3").arg(secs/3600,2,10,zero).arg(secs/60%60,2,10,zero).arg(secs%60,2,10,zero);
+}
 void PlayBar::resize_bar(int w, int h){
 	setGeometry(0,h-120,w,120);
 }
-void PlayBar::duration_changed(double duration){
-
-	video_slider -> setMaximum((int)(duration*1000));
+void PlayBar::duration_changed(double dur){
+	duration ->setText(pos_to_time(dur));
+	video_slider -> setMaximum((int)(dur*1000));
 }
 void PlayBar::time_pos_changed(double pos){
+	noseek = true;
+	current_time -> setText(pos_to_time(pos));
 	video_slider -> setSliderPosition((int) (pos*1000));	
+	noseek = false;
 }
 
 void PlayBar::fullscreen_toggle(){

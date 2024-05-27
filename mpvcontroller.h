@@ -13,14 +13,15 @@ class MpvController : public QWidget{
 	private:
 		QWidget *parent;
 		MpvWidget *mpv;
-		QTime *clipstart;
-		QTime *clipend;
+		QString clipstart;
+		QString clipend;
 		QSettings settings;
 		int volume;
 		bool seek_paused;
 
-
+		void play_init();
 		void file_load();
+		QString time_pos_string();
 	public slots:
 		void file_open();
 		void folder_open();
@@ -36,6 +37,8 @@ class MpvController : public QWidget{
 		void seek_forward();
 		void seek_backward();
 		void seek_time(int secs);
+		void play_playlist_index(int ind);
+		void screenshot();
 	private slots:
 		void handle_mpv_event(mpv_event *event);
 	signals:

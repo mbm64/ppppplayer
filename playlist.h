@@ -9,6 +9,8 @@ class PlaylistWindow : public QWidget{
 	private:
 		QListWidget * playlist;
 		MpvController * controller;
+	private slots:
+		void item_chosen(QListWidgetItem * item);
 	protected:
 		void showEvent(QShowEvent * event);
 		

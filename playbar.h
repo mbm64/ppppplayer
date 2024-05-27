@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QTextStream>
 #include <QScrollBar>
+#include <QLabel>
 class PlayBar : public QWidget{
 	Q_OBJECT
 	public:
@@ -24,7 +25,7 @@ class PlayBar : public QWidget{
 		void update_file_length(QString length);
 		void update_current_pos(QString pos);
 		void time_pos_changed(double pos);
-		void duration_changed(double duration);
+		void duration_changed(double dur);
 		void fullscreen_toggle();
 
 
@@ -43,6 +44,9 @@ class PlayBar : public QWidget{
 		QTimer * bar_timer;
 		int bar_uptime;
 		bool visible;
+		bool noseek;
+		QLabel * duration;
+		QLabel * current_time;
 		
 
 };

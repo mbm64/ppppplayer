@@ -36,3 +36,11 @@ class SubSettings : public QWidget{
 		void update_prefered_subs(QString s);
 		void update_prefered_aud(QString s);
 };
+class ScreenshotSetteings:public QWidget{
+	Q_OBJECT
+	public:
+		ScreenshotSetteings(QWidget * parent = nullptr);
+	private:
+		QSettings settings;
+		QLineEdit * path;
+};

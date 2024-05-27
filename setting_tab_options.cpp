@@ -107,3 +107,21 @@ void SubSettings::update_prefered_aud(QString s){
 
 
 //}}}
+
+
+//ScreenShot Settings
+ScreenshotSetteings::ScreenshotSetteings(QWidget * parent) : QWidget(parent){
+	
+	QGridLayout * grid = new QGridLayout();
+	QLabel * dir_label = new QLabel("ScreenShot Directory");
+	grid -> addWidget(dir_label,0,0);
+
+	path = new QLineEdit();
+	path->setReadOnly(true);
+	QString	current_path = settings.value("screenshot/path",QStandardPaths::PicturesLocation).toString();
+	path -> setText(current_path);
+	grid -> addWidget(path,0,1);
+
+	QPushButton * browse = new QPushButton("Browse");
+	grid -> addWidget(browse,0,2);
+}

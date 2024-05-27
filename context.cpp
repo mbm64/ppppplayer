@@ -5,6 +5,7 @@
 #include <util.h>
 #include <QFileInfo>
 #include "playlist.h"
+#include <QDebug>
 //#include "mpvcontroller.h"
 ContextMenu::ContextMenu(MpvController *controller, QWidget *parent) : QWidget(parent){
 	this -> controller = controller;
@@ -57,6 +58,7 @@ void ContextMenu::show_ctx_menu(const QPoint &pos){
 }
 
 void ContextMenu::set_clip_start_time(QString s){	
+	qDebug() <<"signal received "<<s<<"\n";
 	if(s.isEmpty()) clip_start_time ->setText("Not Set");
 	else clip_start_time -> setText(s);
 
