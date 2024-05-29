@@ -110,6 +110,7 @@ void SubSettings::update_prefered_aud(QString s){
 
 
 //ScreenShot Settings
+//{{{
 ScreenshotSettings::ScreenshotSettings(QWidget * parent) : QWidget(parent){
 	
 	QGridLayout * grid = new QGridLayout();
@@ -135,3 +136,4 @@ void ScreenshotSettings::browse_clicked(){
 
 
 }
+//}}}
